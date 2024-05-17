@@ -5,6 +5,7 @@ import { FaRegHeart, FaShoppingBag, FaUser } from "react-icons/fa";
 import { useState } from "react";
 import { navItems } from "./navItems";
 import Link from "next/link";
+import { MdMenu, MdClose } from "react-icons/md";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -14,9 +15,10 @@ const Navbar = () => {
   };
   return (
     <>
+      {/* over all header component wrapper */}
       <header className="header-container fixed top-0 left-0 right-0 z-50">
         {/* header top section  */}
-        <div className="header-top-section hidden lg:w-full max-w-screen-2xl mx-auto bg-[#F3FAF5] h-12 lg:flex justify-between items-center px-36  border-b">
+        <div className="header-top-section hidden lg:w-full max-w-screen-2xl mx-auto bg-[#F3FAF5] h-14 lg:flex justify-between items-center px-36  border-b">
           <div>
             <ul className="flex items-center space-x-5 font-medium text-gray-700">
               <li>
@@ -67,7 +69,7 @@ const Navbar = () => {
               />
               <input
                 type="submit"
-                className="px-3 py-2 border bg-[#27AE60] text-white"
+                className="px-3 py-2 border bg-[#27AE60] text-white cursor-pointer"
               />
             </form>
           </div>
@@ -79,33 +81,72 @@ const Navbar = () => {
         </div>
 
         {/* main navigation bar */}
-        <nav className="w-full max-w-screen-2xl mx-auto h-20 bg-green-600 hidden lg:flex items-center justify-between px-36">
-          <div className="dropdown">
-            <select name="category" id="all-categories" className="p-2 border">
-              <option value="">Select By Categories</option>
-              <option value="salt-water-fish">Salt Water Fish</option>
-              <option value="fresh-water-fish">Fresh Water Fish</option>
-              <option value="deep-sea-fish">Deep Sea Fish</option>
-              <option value="brackish-water-fish">Brackish Water Fish</option>
-              <option value="cold-water-fish">Cold Water Fish</option>
-            </select>
+        <header>
+          <nav className="w-full max-w-screen-2xl mx-auto h-20 bg-[#34A853] hidden lg:flex items-center justify-between px-36">
+            <div className="dropdown">
+              <select
+                name="category"
+                id="all-categories"
+                className="p-2 border"
+              >
+                <option value="">All Categories</option>
+                <option value="salt-water-fish">Salt Water Fish</option>
+                <option value="fresh-water-fish">Fresh Water Fish</option>
+                <option value="deep-sea-fish">Deep Sea Fish</option>
+                <option value="brackish-water-fish">Brackish Water Fish</option>
+                <option value="cold-water-fish">Cold Water Fish</option>
+              </select>
+            </div>
+            <div className="nav-items flex space-x-5">
+              {navItems.map((item, index) => (
+                <li key={index} className="text-white text-lg ">
+                  <Link href={item.link}>{item.label}</Link>
+                </li>
+              ))}
+            </div>
+            <div className="login-button">
+              <button className="px-8 py-2 bg-[#FFBB38] text-black border-0 rounded-sm font-medium">
+                Login
+              </button>
+            </div>
+          </nav>
+          {/* for small device */}
+          <div className="nav-sm-container lg:hidden w-full h-16 flex items-center justify-between bg-[#34A853] px-4">
+            <div className="logo">
+              <h1 className="font-semibold text-black text-2xl md:text-3xl">
+                Bounty <span className="text-white">Basket</span>
+              </h1>
+            </div>
+            <div className="toggle-button text-3xl text-white">
+              <button onClick={handleDrawerToggle}>
+                {isMobileMenuOpen ? <MdClose /> : <MdMenu />}
+              </button>
+            </div>
+            {/* mobile drawer */}
+            {isMobileMenuOpen && (
+              <div className="fixed top-16 right-0 z-20 w-60 h-screen bg-slate-50">
+                <div className="items text-center space-y-5 pt-10">
+                  {navItems.map((item, index) => (
+                    <li key={index} className="text-black text-lg uppercase">
+                      <Link
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        href={item.link}
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
-          <div className="nav-items flex space-x-5">
-            {navItems.map((item, index) => (
-              <li key={index} className="text-white text-lg ">
-                <Link href={item.link}>{item.label}</Link>
-              </li>
-            ))}
-          </div>
-          <div className="login-button">
-            <button className="px-8 py-2 bg-[#FFBB38] text-black border-0 rounded-sm font-medium">
-              Login
-            </button>
-          </div>
-        </nav>
+        </header>
       </header>
     </>
   );
 };
 
 export default Navbar;
+
+/*
+ */
